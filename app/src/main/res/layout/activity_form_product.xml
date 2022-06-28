@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         tools:context=".ui.activity.FormProductActivity">
         <EditText
-            android:id="@+id/edit_name"
+            android:id="@+id/activity_form_product_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -24,36 +24,36 @@
            />
 
         <EditText
-            android:id="@+id/edit_description"
+            android:id="@+id/activity_form_product_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Descrição"
             android:inputType="textMultiLine"
-            app:layout_constraintEnd_toEndOf="@id/edit_name"
-            app:layout_constraintStart_toStartOf="@id/edit_name"
-            app:layout_constraintTop_toBottomOf="@id/edit_name"
-            app:layout_constraintBottom_toTopOf="@id/edit_price"/>
+            app:layout_constraintEnd_toEndOf="@id/activity_form_product_name"
+            app:layout_constraintStart_toStartOf="@id/activity_form_product_name"
+            app:layout_constraintTop_toBottomOf="@id/activity_form_product_name"
+            app:layout_constraintBottom_toTopOf="@id/activity_form_product_price"/>
 
         <EditText
-            android:id="@+id/edit_price"
+            android:id="@+id/activity_form_product_price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Preço"
             android:inputType="numberDecimal"
-            app:layout_constraintEnd_toEndOf="@id/edit_name"
-            app:layout_constraintStart_toStartOf="@id/edit_name"
-            app:layout_constraintTop_toBottomOf="@id/edit_description" />
+            app:layout_constraintEnd_toEndOf="@id/activity_form_product_name"
+            app:layout_constraintStart_toStartOf="@id/activity_form_product_name"
+            app:layout_constraintTop_toBottomOf="@id/activity_form_product_description" />
 
         <Button
-            android:id="@+id/button_save"
+            android:id="@+id/activity_form_button_save"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="Salvar"
-            app:layout_constraintEnd_toEndOf="@id/edit_name"
-            app:layout_constraintStart_toStartOf="@id/edit_name"
+            app:layout_constraintEnd_toEndOf="@id/activity_form_product_name"
+            app:layout_constraintStart_toStartOf="@id/activity_form_product_name"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_price"
+            app:layout_constraintTop_toBottomOf="@id/activity_form_product_price"
             app:layout_constraintVertical_bias="1"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
