@@ -1,30 +1,34 @@
 package br.com.molero.orgs.ui.activity
 
-import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import br.com.molero.orgs.R
+import br.com.molero.orgs.dao.ProductsDao
 import br.com.molero.orgs.model.Product
 import br.com.molero.orgs.ui.recyclerview.adapter.ListProductsAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.math.BigDecimal
 
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.adapter = ListProductsAdapter(
-            context = this, products = listOf(
-                Product(
-                    name = "Salada", description = "Isso é uma Salada", price = BigDecimal("19.99")
 
-                ),
-                Product(
-                    name = "Frango", description = "Isso é um Frango", price = BigDecimal("35.99")
-                )
-            )
-        )
-        //recyclerView.layoutManager = LinearLayoutManager(this) Foi implementado o layoutManager via XML em activity_main dentro do componente da RecyclerView
+        //recyclerView.layoutManager = LinearLayoutManager(this)
+        // Foi implementado o layoutManager via XML em activity_main dentro do componente da RecyclerView
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        val dao = ProductsDao()
+        recyclerView.adapter = ListProductsAdapter(context = this, products = dao.searchAll())
+        val fab = findViewById<FloatingActionButton>(R.id.float_button_add)
+        fab.setOnClickListener {
+            val intent = Intent(this, FormProductActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
