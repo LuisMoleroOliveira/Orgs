@@ -5,52 +5,67 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.molero.orgs.databinding.ProductItemBinding
+import br.com.molero.orgs.ui.Functions
 import br.com.molero.orgs.model.Product
+import coil.load
+import java.math.BigDecimal
+import java.text.NumberFormat
+import java.util.*
 
 class ListProductsAdapter(
     private val context: Context,
     products: List<Product>,
-) : RecyclerView.Adapter<ListProductsAdapter.ViewHolderList>() {
+
+) : RecyclerView.Adapter<ListProductsAdapter.ViewHolderList>(){
 
     private val products = products.toMutableList()
-        class ViewHolderList(binding: ProductItemBinding) : RecyclerView.ViewHolder(binding.root) {
-            private val name = binding.productItemName
-            private val description = binding.productItemDescription
-            private val price = binding.productItemPrice
 
-            fun binds(product: Product) {
-                //val name = itemView.findViewById<TextView>(R.id.product_item_name) substituído pelo View Binding
-                name.text = product.name
-                //val description = itemView.findViewById<TextView>(R.id.product_item_description) substituído pelo View Binding
-                description.text = product.description
-                //val price = itemView.findViewById<TextView>(R.id.product_item_price) substituído pelo View Binding
-                price.text = product.price.toPlainString()
-            }
+    class ViewHolderList(private val binding: ProductItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun binds(product: Product,context: Context) {
+
+           val functions = Functions()
+           var imageLoader = functions.addGifs(context) //carregar função para suporte a gifs
+            //val name = itemView.findViewById<TextView>(R.id.product_item_name) substituído pelo View Binding
+            val name = binding.productItemName
+            name.text = product.name
+            //val description = itemView.findViewById<TextView>(R.id.product_item_description) substituído pelo View Binding
+            val description = binding.productItemDescription
+            description.text = product.description
+            //val price = itemView.findViewById<TextView>(R.id.product_item_price) substituído pelo View Binding
+            val price = binding.productItemPrice
+            val formatPrice = formatPriceBr(product.price)
+            price.text = formatPrice
+            binding.productItemImageView.load(product.image,imageLoader)
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderList {
-
-            //val inflater = LayoutInflater.from(context) substituído pelo View Binding abaixo
-            //val viewInflate = inflater.inflate(R.layout.product_item, parent, false) substituído pelo View Binding abaixo
-
-            val binding = ProductItemBinding.inflate(LayoutInflater.from(context),parent,false)
-            return ViewHolderList(binding)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolderList, position: Int) {
-            val product = products[position]
-            holder.binds(product)
-
-        }
-
-        override fun getItemCount(): Int = products.size
-
-        fun update(products: List<Product>) {
-            this.products.clear()
-            this.products.addAll(products)
-            //notifyDataSetChanged()
+        private fun formatPriceBr(price: BigDecimal): String? {
+            val format = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
+            return format.format(price)
         }
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderList {
+        //val inflater = LayoutInflater.from(context) substituído pelo View Binding abaixo
+        //val viewInflate = inflater.inflate(R.layout.product_item, parent, false) substituído pelo View Binding abaixo
+        val binding = ProductItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        return ViewHolderList(binding)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolderList, position: Int) {
+        val product = products[position]
+        holder.binds(product,context)
+    }
+
+    override fun getItemCount(): Int = products.size
+
+    fun update(products: List<Product>) {
+        this.products.clear()
+        this.products.addAll(products)
+        notifyDataSetChanged()
+    }
+}
 
 
 

@@ -1,6 +1,7 @@
 package br.com.molero.orgs.dao
 
 import br.com.molero.orgs.model.Product
+import java.math.BigDecimal
 
 class ProductsDao {
 
@@ -12,6 +13,8 @@ class ProductsDao {
     }
 
     companion object {
-        private val products = mutableListOf<Product>()
+        private val products = mutableListOf<Product>(
+            //Product(name = "Salada de fruta", description = "Isso é uma salada de frutas", price = BigDecimal("19.99"))
+        )
     }
 }

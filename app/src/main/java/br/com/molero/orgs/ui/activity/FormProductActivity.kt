@@ -1,22 +1,54 @@
 package br.com.molero.orgs.ui.activity
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import br.com.molero.orgs.dao.ProductsDao
 import br.com.molero.orgs.databinding.ActivityFormProductBinding
+import br.com.molero.orgs.databinding.FormImageBinding
+import br.com.molero.orgs.ui.Functions
 import br.com.molero.orgs.model.Product
+import coil.load
 import java.math.BigDecimal
 
 class FormProductActivity : AppCompatActivity() {
+
+
     private val binding by lazy {
         ActivityFormProductBinding.inflate(layoutInflater) // adicionado para o View Binding
     }
+    private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_form_product) substituído pelo View Binding abaixo
         setContentView(binding.root)
+
+        val functions = Functions()
+        val imageLoader = functions.addGifs(this) //carregar função para suporte a gifs
+
         configButtonSave()
+        binding.activityFormProductImageView.setOnClickListener(View.OnClickListener {
+            val bindingFormImage = FormImageBinding.inflate(layoutInflater)
+
+            bindingFormImage.formImageButtonLoad.setOnClickListener {
+                url = bindingFormImage.activityFormImageUrl.text.toString()
+                bindingFormImage.formImageImageview.load(url, imageLoader)
+            }
+
+            AlertDialog.Builder(this)
+                .setView(bindingFormImage.root)
+                .setPositiveButton("Confirmar", DialogInterface.OnClickListener { dialog, which ->
+                    url = bindingFormImage.activityFormImageUrl.text.toString()
+                    binding.activityFormProductImageView.load(url, imageLoader)
+                })
+                .setNegativeButton("Cancelar", DialogInterface.OnClickListener { dialog, which ->
+
+                })
+                .show()
+        })
     }
 
     private fun configButtonSave() {
@@ -49,7 +81,8 @@ class FormProductActivity : AppCompatActivity() {
         return Product(
             name = name,
             description = description,
-            price = price
+            price = price,
+            image = url
         )
     }
 }

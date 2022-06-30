@@ -22,8 +22,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         configRecyclerView()
         configFab()
-        //recyclerView.layoutManager = LinearLayoutManager(this)
-        // Foi implementado o layoutManager via XML em activity_main dentro do componente da RecyclerView
+        /*
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        Foi implementado o layoutManager via XML em activity_main dentro do componente da RecyclerView
+        */
+
     }
 
     override fun onResume() {
@@ -33,8 +36,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun configFab() {
         //val fab = findViewById<FloatingActionButton>(R.id.activity_main_float_button_add) substituído pelo View Binding abaixo
-        val fab = binding.activityMainFloatButtonAdd
-        fab.setOnClickListener {
+        val extendedFab = binding.activityMainFloatButtonAdd
+        extendedFab.setOnClickListener {
             val intent = Intent(this, FormProductActivity::class.java)
             startActivity(intent)
         }

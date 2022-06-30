@@ -16,16 +16,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/product_item" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/activity_main_float_button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
-        android:contentDescription="Botão adicionar"
+        android:contentDescription="@string/button_add_new_product"
         android:focusable="true"
+        android:text="@string/New_product"
+        app:icon="@drawable/ic_action_add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_action_add" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
