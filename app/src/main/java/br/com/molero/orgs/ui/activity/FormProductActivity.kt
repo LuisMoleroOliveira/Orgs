@@ -1,15 +1,14 @@
 package br.com.molero.orgs.ui.activity
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import br.com.molero.orgs.dao.ProductsDao
 import br.com.molero.orgs.databinding.ActivityFormProductBinding
-import br.com.molero.orgs.databinding.FormImageBinding
-import br.com.molero.orgs.ui.Functions
+import br.com.molero.orgs.extensions.tryLoadImage
 import br.com.molero.orgs.model.Product
+import br.com.molero.orgs.ui.dialog.FormImageDialog
+import coil.imageLoader
 import coil.load
 import java.math.BigDecimal
 
@@ -25,29 +24,13 @@ class FormProductActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_form_product) substituído pelo View Binding abaixo
         setContentView(binding.root)
-
-        val functions = Functions()
-        val imageLoader = functions.addGifs(this) //carregar função para suporte a gifs
-
+        title="Cadastrar produto"
         configButtonSave()
         binding.activityFormProductImageView.setOnClickListener(View.OnClickListener {
-            val bindingFormImage = FormImageBinding.inflate(layoutInflater)
-
-            bindingFormImage.formImageButtonLoad.setOnClickListener {
-                url = bindingFormImage.activityFormImageUrl.text.toString()
-                bindingFormImage.formImageImageview.load(url, imageLoader)
+            FormImageDialog(this).show(url){ image ->
+                url = image
+                binding.activityFormProductImageView.tryLoadImage(url,this)
             }
-
-            AlertDialog.Builder(this)
-                .setView(bindingFormImage.root)
-                .setPositiveButton("Confirmar", DialogInterface.OnClickListener { dialog, which ->
-                    url = bindingFormImage.activityFormImageUrl.text.toString()
-                    binding.activityFormProductImageView.load(url, imageLoader)
-                })
-                .setNegativeButton("Cancelar", DialogInterface.OnClickListener { dialog, which ->
-
-                })
-                .show()
         })
     }
 

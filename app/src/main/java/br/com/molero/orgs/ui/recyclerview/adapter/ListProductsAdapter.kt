@@ -2,12 +2,12 @@ package br.com.molero.orgs.ui.recyclerview.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.molero.orgs.databinding.ProductItemBinding
-import br.com.molero.orgs.ui.Functions
+import br.com.molero.orgs.extensions.tryLoadImage
 import br.com.molero.orgs.model.Product
-import coil.load
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
@@ -24,9 +24,6 @@ class ListProductsAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun binds(product: Product,context: Context) {
-
-           val functions = Functions()
-           var imageLoader = functions.addGifs(context) //carregar função para suporte a gifs
             //val name = itemView.findViewById<TextView>(R.id.product_item_name) substituído pelo View Binding
             val name = binding.productItemName
             name.text = product.name
@@ -37,7 +34,14 @@ class ListProductsAdapter(
             val price = binding.productItemPrice
             val formatPrice = formatPriceBr(product.price)
             price.text = formatPrice
-            binding.productItemImageView.load(product.image,imageLoader)
+
+            val visibility = if (product.image != null && product.image !="") {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+            binding.productItemImageView.visibility = visibility
+            binding.productItemImageView.tryLoadImage(product.image,context)
         }
 
         private fun formatPriceBr(price: BigDecimal): String? {
