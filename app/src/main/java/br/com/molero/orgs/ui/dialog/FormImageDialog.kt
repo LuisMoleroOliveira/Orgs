@@ -15,13 +15,13 @@ class FormImageDialog(private val context: Context) {
         val bindingFormImage = FormImageBinding.inflate(LayoutInflater.from(context))
 
         defaultUrl?.let {
-            bindingFormImage.formImageImageview.tryLoadImage(it,context)
+            bindingFormImage.formImageImageview.tryLoadImage(it)
             bindingFormImage.activityFormImageUrl.setText(it)
         }
 
         bindingFormImage.formImageButtonLoad.setOnClickListener {
             val url = bindingFormImage.activityFormImageUrl.text.toString()
-            bindingFormImage.formImageImageview.tryLoadImage(url,context)
+            bindingFormImage.formImageImageview.tryLoadImage(url)
         }
         AlertDialog.Builder(context)
             .setView(bindingFormImage.root)

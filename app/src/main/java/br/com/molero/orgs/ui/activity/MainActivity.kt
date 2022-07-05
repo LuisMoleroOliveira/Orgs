@@ -9,9 +9,7 @@ import br.com.molero.orgs.ui.recyclerview.adapter.ListProductsAdapter
 
 class MainActivity : AppCompatActivity() {
     private val dao = ProductsDao()
-    //private val adapter = ListProductsAdapter(context = this, products = dao.searchAll())
-    private val adapter by lazy {
-        ListProductsAdapter(this, products = dao.searchAll())    }
+    private val adapter = ListProductsAdapter(this, products = dao.searchAll())
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater) // adicionado para o View Binding
     }
@@ -47,5 +45,16 @@ class MainActivity : AppCompatActivity() {
         //val recyclerView = findViewById<RecyclerView>(R.id.recyclerView) substituído pelo View Binding abaixo
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
+        adapter.whenClickItem = {
+            val intent = Intent(
+                this,
+                ProductDetailsActivity::class.java
+            ).apply {
+                putExtra(CHAVE_PRODUTO, it)
+            }
+            startActivity(intent)
+        }
     }
+
 }
+   

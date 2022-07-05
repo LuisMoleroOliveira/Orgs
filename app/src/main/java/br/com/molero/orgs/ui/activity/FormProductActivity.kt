@@ -29,7 +29,7 @@ class FormProductActivity : AppCompatActivity() {
         binding.activityFormProductImageView.setOnClickListener(View.OnClickListener {
             FormImageDialog(this).show(url){ image ->
                 url = image
-                binding.activityFormProductImageView.tryLoadImage(url,this)
+                binding.activityFormProductImageView.tryLoadImage(url)
             }
         })
     }

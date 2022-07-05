@@ -6,25 +6,34 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.molero.orgs.databinding.ProductItemBinding
+import br.com.molero.orgs.extensions.formatPriceBr
 import br.com.molero.orgs.extensions.tryLoadImage
 import br.com.molero.orgs.model.Product
-import java.math.BigDecimal
-import java.text.NumberFormat
-import java.util.*
 
 class ListProductsAdapter(
     private val context: Context,
     products: List<Product>,
-
+    var whenClickItem: (product: Product) -> Unit = {}
 ) : RecyclerView.Adapter<ListProductsAdapter.ViewHolderList>(){
 
     private val products = products.toMutableList()
 
-    class ViewHolderList(private val binding: ProductItemBinding) :
+    inner class ViewHolderList(private val binding: ProductItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun binds(product: Product,context: Context) {
+        private lateinit var product: Product
+
+        init {
+            itemView.setOnClickListener {
+                if (::product.isInitialized) {
+                    whenClickItem(product)
+                }
+            }
+        }
+
+        fun binds(product: Product) {
             //val name = itemView.findViewById<TextView>(R.id.product_item_name) substituído pelo View Binding
+            this.product  = product
             val name = binding.productItemName
             name.text = product.name
             //val description = itemView.findViewById<TextView>(R.id.product_item_description) substituído pelo View Binding
@@ -32,22 +41,22 @@ class ListProductsAdapter(
             description.text = product.description
             //val price = itemView.findViewById<TextView>(R.id.product_item_price) substituído pelo View Binding
             val price = binding.productItemPrice
-            val formatPrice = formatPriceBr(product.price)
+            val formatPrice = product.price.formatPriceBr()
             price.text = formatPrice
 
-            val visibility = if (product.image != null && product.image !="") {
+            val visibility = if (product.image != null) {
                 View.VISIBLE
             } else {
                 View.GONE
             }
             binding.productItemImageView.visibility = visibility
-            binding.productItemImageView.tryLoadImage(product.image,context)
+            binding.productItemImageView.tryLoadImage(product.image)
         }
 
-        private fun formatPriceBr(price: BigDecimal): String? {
-            val format = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
-            return format.format(price)
-        }
+//        private fun formatPriceBr(price: BigDecimal): String? {
+//            val format = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
+//            return format.format(price)
+//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderList {
@@ -59,7 +68,7 @@ class ListProductsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolderList, position: Int) {
         val product = products[position]
-        holder.binds(product,context)
+        holder.binds(product)
     }
 
     override fun getItemCount(): Int = products.size
